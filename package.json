@@ -1,0 +1,38 @@
+{
+	"name": "fitkeep_server",
+	"version": "1.0.0",
+	"description": "",
+	"main": "app.js",
+	"scripts": {
+		"start": "nodemon server.js",
+		"start:prod": "NODE_ENV=production node server.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/glebhubarevich/FitKeep.git"
+	},
+	"keywords": [
+		"react",
+		"node",
+		"express",
+		"mongodb"
+	],
+	"author": "Gleb Hubarevich",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/glebhubarevich/FitKeep/issues"
+	},
+	"homepage": "https://github.com/glebhubarevich/FitKeep#readme",
+	"dependencies": {
+		"bcryptjs": "^2.4.3",
+		"cors": "^2.8.5",
+		"date-fns": "^3.6.0",
+		"dotenv": "^16.4.5",
+		"express": "^4.19.2",
+		"jsonwebtoken": "^9.0.2",
+		"mongoose": "^8.3.4",
+		"morgan": "^1.10.0",
+		"multer": "^1.4.5-lts.1",
+		"react": "^18.3.1"
+	}
+}
