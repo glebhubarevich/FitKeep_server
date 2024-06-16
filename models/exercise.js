@@ -8,7 +8,7 @@ const ExerciseSchema = new Schema({
 		required: true,
 		enum: ['Cardio', 'Biceps', 'Triceps', 'Back', 'Abs', 'Legs', 'Shoulders'],
 	},
-	media: [{type: String}], // Add media field to store file paths
+	media: [{type: String}],
 });
 
 module.exports = mongoose.model('Exercise', ExerciseSchema);

@@ -4,26 +4,40 @@ const auth = require('../middleware/auth');
 const multer = require('multer');
 const router = new express.Router();
 
-// Multer configuration for file uploads
-const upload = multer({
-	dest: 'uploads/',
-	limits: {
-		fileSize: 10000000, // 10 MB limit
+// // Multer configuration for file uploads
+// const upload = multer({
+// 	dest: 'uploads/',
+// 	limits: {
+// 		fileSize: 10000000, // 10 MB limit
+// 	},
+// 	fileFilter(req, file, cb) {
+// 		if (!file.originalname.match(/\.(jpg|jpeg|png|mp4)$/)) {
+// 			return cb(new Error('Please upload an image or video'));
+// 		}
+// 		cb(null, true);
+// 	},
+// });
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, 'uploads/');
 	},
-	fileFilter(req, file, cb) {
-		if (!file.originalname.match(/\.(jpg|jpeg|png|mp4)$/)) {
-			return cb(new Error('Please upload an image or video'));
-		}
-		cb(null, true);
+	filename: function (req, file, cb) {
+		cb(null, `${Date.now()}-${file.originalname}`);
 	},
 });
+
+const upload = multer({storage: storage});
 
 // Create an exercise
 router.post('/', auth, upload.array('media'), async (req, res) => {
 	const exercise = new Exercise({
 		...req.body,
 		user: req.user._id,
-		media: req.files ? req.files.map((file) => file.path) : '', // Save file paths in media field
+		media: req.files
+			? req.files.map(
+					(file) => `${req.protocol}://${req.get('host')}/${file.path}`
+			  )
+			: '',
 	});
 
 	try {

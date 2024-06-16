@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const authRouter = require('./routes/auth');
 const userRouter = require('./routes/users');
 const trainingRouter = require('./routes/trainings');
@@ -12,7 +13,7 @@ if (process.env.NODE_ENV === 'development') {
 	app.use(morgan('dev'));
 }
 app.use(cors());
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/trainings', trainingRouter);

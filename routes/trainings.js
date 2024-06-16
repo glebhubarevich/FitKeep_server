@@ -29,7 +29,7 @@ router.get('/', auth, async (req, res) => {
 		);
 		res.send(trainings);
 	} catch (error) {
-		console.error(error); // Log error to console
+		console.error(error);
 		res.status(500).send(error);
 	}
 });
@@ -81,7 +81,7 @@ router.get('/date/:date', auth, async (req, res) => {
 // Update a training
 router.patch('/:id', auth, async (req, res) => {
 	const updates = Object.keys(req.body);
-	const allowedUpdates = ['description', 'exercises'];
+	const allowedUpdates = ['description', 'date', 'exercises'];
 	const isValidOperation = updates.every((update) =>
 		allowedUpdates.includes(update)
 	);
@@ -95,18 +95,52 @@ router.patch('/:id', auth, async (req, res) => {
 			_id: req.params.id,
 			user: req.user._id,
 		});
+
 		if (!training) {
 			return res.status(404).send();
 		}
 
-		updates.forEach((update) => (training[update] = req.body[update]));
+		updates.forEach((update) => {
+			training[update] = req.body[update];
+		});
 
 		await training.save();
 		res.send(training);
 	} catch (error) {
+		console.error('Update error:', error);
 		res.status(400).send(error);
 	}
 });
+// router.patch('/:id', auth, async (req, res) => {
+// 	console.log(req.body);
+// 	const updates = Object.keys(req.body);
+// 	const allowedUpdates = ['description', 'exercises'];
+// 	const isValidOperation = updates.every((update) =>
+// 		allowedUpdates.includes(update)
+// 	);
+
+// 	if (!isValidOperation) {
+// 		return res.status(400).send({error: 'Invalid updates!'});
+// 	}
+
+// 	try {
+// 		const training = await Training.findOne({
+// 			_id: req.params.id,
+// 			user: req.user._id,
+// 		});
+// 		console.log(training);
+// 		if (!training) {
+// 			return res.status(404).send();
+// 		}
+
+// 		updates.forEach((update) => (training[update] = req.body[update]));
+
+// 		await training.save();
+// 		res.send(training);
+// 	} catch (error) {
+// 		res.status(400).send(error);
+// 	}
+// });
 
 // Delete a training
 router.delete('/:id', auth, async (req, res) => {
