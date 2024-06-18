@@ -21,13 +21,14 @@ router.post(
 	'/register',
 	profileImageUpload.single('profileImage'),
 	async (req, res) => {
-		console.log(req.body);
 		const user = new User({
 			...req.body,
 			profileImage: req.file
 				? `${req.protocol}://${req.get('host')}/${req.file.path}`
-				: '',
+				: `https://api.dicebear.com/8.x/initials/svg?backgroundType=gradientLinear&seed=${req.body.name.replace(/ /g,'+')}`,
+				// falls kein Bild hochgeladen wurde, wird ein Platzhalter Bild generiert
 		});
+
 		try {
 			await user.save();
 			const token = jwt.sign(
@@ -36,25 +37,10 @@ router.post(
 			);
 			res.status(201).send({user, token});
 		} catch (error) {
-			console.error(error); // Log the error for debugging
 			res.status(400).send({error: error.message});
 		}
 	}
 );
-// router.post('/register', async (req, res) => {
-// 	try {
-// 		const user = new User(req.body);
-// 		await user.save();
-// 		const token = jwt.sign(
-// 			{_id: user._id.toString()},
-// 			process.env.JWT_SECRET
-// 		);
-// 		res.status(201).send({user, token});
-// 	} catch (error) {
-// 		console.error(error); // Log the error for debugging
-// 		res.status(400).send({error: error.message});
-// 	}
-// });
 
 router.post('/login', async (req, res) => {
 	console.log(req.body);
@@ -70,7 +56,6 @@ router.post('/login', async (req, res) => {
 		);
 		res.send({user, token});
 	} catch (error) {
-		console.error(error); // Log the error for debugging
 		res.status(400).send({error: error.message});
 	}
 });
