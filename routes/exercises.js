@@ -4,19 +4,6 @@ const auth = require('../middleware/auth');
 const multer = require('multer');
 const router = new express.Router();
 
-// // Multer configuration for file uploads
-// const upload = multer({
-// 	dest: 'uploads/',
-// 	limits: {
-// 		fileSize: 10000000, // 10 MB limit
-// 	},
-// 	fileFilter(req, file, cb) {
-// 		if (!file.originalname.match(/\.(jpg|jpeg|png|mp4)$/)) {
-// 			return cb(new Error('Please upload an image or video'));
-// 		}
-// 		cb(null, true);
-// 	},
-// });
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
 		cb(null, 'uploads/');
