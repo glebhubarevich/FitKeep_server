@@ -53,7 +53,6 @@ router.get('/:id', auth, async (req, res) => {
 		}
 		res.send(exercise);
 	} catch (error) {
-		console.error(error); // Log error to console
 		res.status(500).send(error);
 	}
 });
@@ -83,7 +82,7 @@ router.patch('/:id', auth, upload.array('media'), async (req, res) => {
 		if (req.files.length) {
 			exercise.media = exercise.media.concat(
 				req.files.map((file) => file.path)
-			); // Add new files to media array
+			); 
 		}
 
 		await exercise.save();

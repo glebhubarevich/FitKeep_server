@@ -26,7 +26,7 @@ router.post(
 			profileImage: req.file
 				? `${req.protocol}://${req.get('host')}/${req.file.path}`
 				: `https://api.dicebear.com/8.x/initials/svg?backgroundType=gradientLinear&seed=${req.body.name.replace(/ /g,'+')}`,
-				// falls kein Bild hochgeladen wurde, wird ein Platzhalter Bild generiert
+				// generate a default profile image if the user does not upload one
 		});
 
 		try {
