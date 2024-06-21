@@ -14,7 +14,10 @@ if (process.env.NODE_ENV === 'development') {
 }
 app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/profileImages', express.static(path.join(__dirname, 'profileImages')));
+app.use(
+	'/profileImages',
+	express.static(path.join(__dirname, 'profileImages'))
+);
 app.use('/api/auth', authRouter);
 app.use('/api/users', userRouter);
 app.use('/api/trainings', trainingRouter);
